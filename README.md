@@ -9,7 +9,7 @@
 #### Modeling variance via GARCH + XGB
 
 <br>
-<br>
+
 ##### Justin Su
 ##### Nick Longueira
 ##### Wally Lutz
