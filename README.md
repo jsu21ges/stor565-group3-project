@@ -8,3 +8,12 @@
 #### XGBoost (universalized gradient boosting)
 #### Modeling variance via GARCH + XGB
 
+
+
+//
+//
+##### Justin Su
+##### Nick Longueira
+##### Wally Lutz
+##### Max Nemecek
+##### Abhimanyu Agashe
