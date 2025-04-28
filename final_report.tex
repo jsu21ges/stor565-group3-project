@@ -131,11 +131,9 @@ We investigated whether Bitcoin (BTC) returns could be predicted using a combina
 
 Our models were fit to predict the log return of Bitcoin from one day to the next day. For feature selection, we initially chose: Bitcoin’s daily open, high, low, and close prices, the federal funds rate (DFF) and the corporate bond yield (DAAA). These features were selected based on economic intuition: Bitcoin price movements are often influenced by risk sentiment in the economy, which DFF and DAAA can capture.\\
 
-
 In our first model, we used a basic approach with no hyperparameter tuning, with a one-day lag for each column. We split the dataset into a sequential 80\% training and 20\% testing split. This first model yielded poor results, with a MAE of 0.061281 and a RMSE of 0.069117. The R² value was -3.971885, indicating that the model performed worse than using just the mean. This suggested that more historical information and better model tuning would be needed.\\ 
 
 Based on the first model, we improved this model by introducing more feature engineering. We changed the lagged features, using information from the previous five days for each predictor. Also, We computed rolling statistics such as a 5-day moving average of log returns, a 5-day moving average of prices, and a 5-day rolling volatility measure to capture short-term momentum. We then performed hyperparameter tuning using a grid search over the number of estimators and tree depth. We used TimeSeriesSplit for cross-validation so sequentiality was upheld. This second model showed improvement, with an MAE of 0.021453, an RMSE of 0.029691, and an R² of 0.180672. This positive R² indicated that the model could now explain a meaningful portion of the variation in Bitcoin’s returns, although there was still considerable unpredictability. \\
-
 
 See figure 1 to compare actual vs. predicted log returns over time for the more successful model.
 
@@ -151,14 +149,11 @@ Purely looking at the $R^2$ does not provide great results, which are negative f
 \subsection{Prophet}
 In addition to the previous models, we decided to use a Prophet model to investigate Log BTC returns as well. Prophet is a forecasting model developed by Meta that performs best on time series data formatted as daily observations. Since our data is formatted in this way, we decided it would be worthwhile to attempt to use this model on our data. The parameters for the model were the date and the highest and lowest price of BTC on each date, and it predicted the daily log return of BTC. We achieved an MAE of 0.0208, an RMSE  of 0.0291, and an R² of -0.08654. The model performed similarly to a number of other models that we attempted to fit on this dataset in that it seems to inadequately capture the high variance of the BTC dataset. 
 
-
 \subsection{Variance Model}
 \paragraph{Motivation}
 Under CAPM or a similar financial market theory, rational investors maximize the Sharpe ratio of their risky assets, equivalent to the ratio of that asset’s excess return over the standard deviation of returns. Therefore, investors are equally interested in predicting the volatility of BTC returns. Extremely risky assets like bitcoin usually display volatility clustering. Additionally, since White’s test for heteroskedasticity gives evidence at the 1\% level to reject the null of constant variance, we can attempt to model potential changes in volatility.
-
 \paragraph{Models}
 For interpretability, the variance models use standard returns scaled by 100, rather than log returns. We use the absolute value of returns as a proxy for true observed variation. First, we estimate bitcoin as an autoregressive process of order one, with an additional exogenous VIX variable, which has been shown to correlate with cryptocurrency performance. Then, we estimate a GARCH(1,1) variance model assuming t-distributed errors on the conditional variance from the AR(1) process. Past analyses have found that GARCH(1,1) consistently performs better than other conditional variance models on asset returns data. This includes a constant, the lagged squared error, and the lagged conditional variance. Finally, to forecast this model to the test set, we estimate the model recursively for each day t in order to generate the predicted volatility given all of the information up to $t-1$.
-
 \paragraph{Results}
 As a baseline, fitting the mean absolute return of the training set on the test set gives an MAE of 2.3021. The GARCH predictions give an MAE of 2.1914, which is a slight improvement, but not enough to conclude that it is viable. Despite this weak performance, the graph shows that the model appears to capture overall patterns well, but cannot capture the full range of variation in the highly noisy data. Extremely high outliers also distort the predictions, resulting in overprediction overall. Censoring these outliers may improve the performance significantly, though could result in bias.
 
