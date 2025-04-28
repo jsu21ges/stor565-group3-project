@@ -135,7 +135,7 @@ In our first model, we used a basic approach with no hyperparameter tuning, with
 
 Based on the first model, we improved this model by introducing more feature engineering. We changed the lagged features, using information from the previous five days for each predictor. Also, We computed rolling statistics such as a 5-day moving average of log returns, a 5-day moving average of prices, and a 5-day rolling volatility measure to capture short-term momentum. We then performed hyperparameter tuning using a grid search over the number of estimators and tree depth. We used TimeSeriesSplit for cross-validation so sequentiality was upheld. This second model showed improvement, with an MAE of 0.021453, an RMSE of 0.029691, and an R² of 0.180672. This positive R² indicated that the model could now explain a meaningful portion of the variation in Bitcoin’s returns, although there was still considerable unpredictability. \\
 
-See figure 1 to compare actual vs. predicted log returns over time for the more successful model.
+See figure 3 to compare actual vs. predicted log returns over time for the more successful model.
 
 \subsection{XGBoost}
 We attempted to investigate the behavior of returns and log returns via the XGBoost model.
